@@ -1,5 +1,16 @@
 let player = 0;
 
+const board = [
+    [7, 8, 9],
+    [4, 5, 6],
+    [1, 2, 3],
+    [1, 4, 7],
+    [2, 5, 8],
+    [3, 6, 9],
+    [1, 5, 9],
+    [3, 5, 7]
+];
+
 function addElement(x) {
     if (document.getElementById(x).innerText === '' && player !== -1) {
         if (player % 2 === 0) {
@@ -20,67 +31,17 @@ function addElement(x) {
 }
 
 function checkWinner(x) {
-    let line, column;
-    line = x.charAt(4);
-    column = x.charAt(5);
-    let check = true;
-    for (let i = 1; i <= 3 && check === true; ++i) {
-        if (document.getElementById("cell" + i + column + "").innerText !== document.getElementById(x).innerText ) {
-            check = false;
+    for (let i = 0; i < 8; ++i) {
+        let a = document.getElementById("" + board[i][0]).innerText;
+        let b = document.getElementById("" + board[i][1]).innerText;
+        let c = document.getElementById("" + board[i][2]).innerText;
+        if (a === b && b === c && a !== '') {
+            document.getElementById("alert").innerHTML = '<div class="alert alert-success" role="alert">Player ' + document.getElementById(x).innerText + ' won!!</div>';
+            document.getElementById("" + board[i][0]).classList.add("wincell");
+            document.getElementById("" + board[i][1]).classList.add("wincell");
+            document.getElementById("" + board[i][2]).classList.add("wincell");
+            player = -1;
+            return false;
         }
     }
-    if (check) {
-        for (let i = 1; i <= 3; ++i) {
-            document.getElementById("cell" + i + column + "").classList.add("wincell");
-        }
-        winner(x);
-        player = -1;
-        return false;
-    }
-    check = true;
-    for (let j = 1; j <= 3 && check === true; ++j) {
-        if (document.getElementById("cell" + line + j +"").innerText !== document.getElementById(x).innerText) {
-            check = false;
-        }
-    }
-    if (check) {
-        for (let i = 1; i <= 3; ++i) {
-            document.getElementById("cell" + line + i + "").classList.add("wincell");
-        }
-        winner(x);
-        player = -1;
-        return false;
-    }
-    check = true;
-    for (let i = 1; i <= 3 && check === true; ++i) {
-        if (document.getElementById("cell" + i + i +"").innerText !== document.getElementById(x).innerText) {
-            check = false;
-        }
-    }
-    if (check) {
-        for (let i = 1; i <= 3; ++i) {
-            document.getElementById("cell" + i + i + "").classList.add("wincell");
-        }
-        winner(x);
-        player = -1;
-        return false;
-    }
-    check = true;
-    for (let i = 1; i <= 3 && check === true; ++i) {
-        if (document.getElementById("cell" + i + (4 - i) +"").innerText !== document.getElementById(x).innerText) {
-            check = false;
-        }
-    }
-    if (check) {
-        for (let i = 1; i <= 3; ++i) {
-            document.getElementById("cell" + i + (4 - i) + "").classList.add("wincell");
-        }
-        winner(x);
-        player = -1;
-        return false;
-    }
-}
-
-function winner(x) {
-    document.getElementById("alert").innerHTML = '<div class="alert alert-success" role="alert">Player ' + document.getElementById(x).innerText + ' won!!</div>'
 }
